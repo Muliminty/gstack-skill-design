@@ -30,6 +30,116 @@ git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git ~/.cl
 Team mode 让整个团队共享 gstack 配置。`required` 强制每位成员使用，`optional` 只是提醒。对个人项目用 `optional` 即可。
 :::
 
+## gstack 技能地图：它到底有哪些 Skill？
+
+安装完 gstack 后，你得到的不是一个命令，而是一整套软件交付工作流。你可以把它理解成一个 AI 专家团队：产品合伙人、工程经理、设计师、QA、安全负责人、发布工程师都被编码成了不同的 Skill。
+
+下面这张表基于 [gstack 官方 skills 文档](https://github.com/garrytan/gstack/blob/main/docs/skills.md)整理。读完不用全部记住，只要知道"遇到什么问题该叫谁"。
+
+### 只看核心闭环
+
+如果你现在只想把一个功能从想法推进到 PR，先记住这 6 个就够了：
+
+| 阶段 | Skill | 你要它解决的问题 |
+| --- | --- | --- |
+| 想清楚 | `/office-hours` | 这个东西到底值不值得做？最小、最酷、最清晰的版本是什么？ |
+| 做对事 | `/plan-ceo-review` | scope 是否太小、太散或太保守？有没有 10 星产品机会？ |
+| 把事做对 | `/plan-eng-review` | 架构、数据流、失败路径和测试计划是否站得住？ |
+| 写完后审 | `/review` | diff 里有没有 CI 看不出来的生产风险？ |
+| 真实环境测 | `/qa` | 用户真的点一遍会不会坏？修复后有没有回归测试？ |
+| 发布 | `/ship` | base、测试、review、版本、CHANGELOG、commit、PR 是否齐全？ |
+
+这条主线之外的 Skill 都是"按风险加餐"：有 UI 就加 `/design-review`，有安全面就加 `/cso`，有性能风险就加 `/benchmark`，要合并部署就接 `/land-and-deploy`。
+
+<details>
+<summary>展开完整技能地图</summary>
+
+### 产品与计划
+
+| Skill | 它做什么 |
+| --- | --- |
+| `/office-hours` | 产品入口。用 Startup / Builder 两种模式追问需求，挑战前提，生成设计文档。 |
+| `/plan-ceo-review` | CEO / founder 视角审 scope，寻找 10 星产品、砍范围或精选扩展。 |
+| `/plan-eng-review` | 工程经理视角审架构、数据流、边界、测试、性能和发布路径。 |
+| `/autoplan` | 自动跑 CEO、设计、工程、DX 多轮计划审查，生成完整 reviewed plan。 |
+| `/plan-tune` | 调整 gstack 提问敏感度，让某些问题以后少问、总问或自动选择。 |
+
+### 设计与体验
+
+| Skill | 它做什么 |
+| --- | --- |
+| `/plan-design-review` | 计划阶段的设计审查，检查信息架构、状态覆盖、响应式、AI slop 等。 |
+| `/design-consultation` | 从 0 设计产品体验和设计系统，适合需要强设计方向的项目。 |
+| `/design-review` | 对真实页面做视觉审计和修复，包含截图、前后对比和原子提交。 |
+| `/design-shotgun` | 生成多个设计方向，打开对比板，让你选一个方向继续迭代。 |
+| `/design-html` | 生成生产级 HTML / 前端页面，适合把设计方向落成可运行界面。 |
+| `/plan-devex-review` | 计划阶段审开发者体验，关注 TTHW、上手路径、文档可信度。 |
+| `/devex-review` | 对真实 onboarding 流程做开发者体验审计，测量实际摩擦。 |
+
+### 编码、调试与质量
+
+| Skill | 它做什么 |
+| --- | --- |
+| `/review` | Staff Engineer 代码审查，找 CI 过不了的生产 bug，能自动修明显问题。 |
+| `/investigate` | 系统化调试。先调查再修复，追踪数据流和假设，避免乱试补丁。 |
+| `/health` | 代码质量仪表盘，整合类型检查、lint、测试、死代码检测并打分。 |
+| `/learn` | 管理 gstack 跨会话学到的项目偏好、模式和经验。 |
+
+### QA、浏览器与数据
+
+| Skill | 它做什么 |
+| --- | --- |
+| `/qa` | QA Lead。真实浏览器里测试、发现 bug、修复并补回归测试。 |
+| `/qa-only` | 只报告不修改代码的 QA，适合你只想要 bug list。 |
+| `/browse` | 给 Agent 浏览器眼睛和手，真实 Chromium 点击、截图、取页面状态。 |
+| `/setup-browser-cookies` | 从本机浏览器导入 cookies，用于测试登录后的页面。 |
+| `/open-gstack-browser` | 打开 GStack Browser，可视化观察 Agent 的浏览器操作。 |
+| `/scrape` | 浏览器数据抽取，先原型化抓取网页数据，再可被 skillify 固化。 |
+| `/skillify` | 把成功的 `/scrape` 过程变成永久 browser skill，附带脚本、fixture 和测试。 |
+
+### 安全、性能与发布
+
+| Skill | 它做什么 |
+| --- | --- |
+| `/cso` | Chief Security Officer 安全审计，覆盖 OWASP、STRIDE、依赖、CI/CD、LLM 安全。 |
+| `/benchmark` | 性能工程师，基准测试页面加载、Core Web Vitals 和资源体积。 |
+| `/ship` | 发布工程师。合并 base、跑测试、审 diff、bump 版本、写 CHANGELOG、提交 PR。 |
+| `/land-and-deploy` | 合并 PR、等待 CI 和部署、验证线上健康。 |
+| `/canary` | 部署后监控循环，观察 console errors、性能回退和页面失败。 |
+| `/setup-deploy` | 一次性配置部署平台、生产 URL 和发布命令，供 land-and-deploy 使用。 |
+| `/document-release` | 技术写作，更新 README、文档和发布说明，避免文档落后于代码。 |
+| `/retro` | 团队复盘，统计 shipping streak、测试健康、个人贡献和改进机会。 |
+
+### 多 AI、记忆与基础设施
+
+| Skill | 它做什么 |
+| --- | --- |
+| `/codex` | 调 OpenAI Codex 做第二意见、对抗审查或开放咨询。 |
+| `/pair-agent` | 让远程 AI agent 连接你的浏览器会话，适合多代理协作。 |
+| `/setup-gbrain` | 配置 gbrain，实现跨机器的会话记忆同步。 |
+| `/sync-gbrain` | 刷新 gbrain 对当前 repo 的代码理解，指导 Agent 何时用语义检索。 |
+| `/context-save` | 保存当前工作上下文、git 状态、决策和剩余任务。 |
+| `/context-restore` | 从保存的上下文恢复工作，跨会话继续。 |
+| `/landing-report` | 只读查看发布队列和版本占用，适合多 worktree 并行开发。 |
+| `/benchmark-models` | 横向比较 Claude、GPT、Gemini 等模型在 Skill 上的速度、成本和质量。 |
+
+### 安全护栏与实用工具
+
+| Skill | 它做什么 |
+| --- | --- |
+| `/careful` | 对 destructive 命令加警告，比如 `rm -rf`、force push、hard reset。 |
+| `/freeze` | 锁定可编辑目录，防止 Agent 改到边界外文件。 |
+| `/guard` | 同时启用 careful 和 freeze，适合生产事故或高风险修改。 |
+| `/unfreeze` | 解除 freeze 编辑边界。 |
+| `/gstack-upgrade` | 升级 gstack，处理 global / vendored 安装并展示变更。 |
+| `/make-pdf` | 把 Markdown 转成高质量 PDF，包含页边距、页码、封面和目录。 |
+
+</details>
+
+:::tip 关键技巧
+不用把所有 Skill 都塞进一次工作流。常见闭环是 `/office-hours → /plan-ceo-review → /plan-eng-review → /review → /qa → /ship`。只有遇到对应风险时才加 `/cso`、`/benchmark`、`/design-review` 或 `/land-and-deploy`。
+:::
+
 ## Step 2：/office-hours — 搞清楚要做什么
 
 在你准备开始编码的项目目录中，对 Claude Code 说：
