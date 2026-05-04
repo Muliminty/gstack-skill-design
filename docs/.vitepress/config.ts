@@ -1,12 +1,11 @@
 import { defineConfig } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 
-export default withMermaid(
-  defineConfig({
-    title: 'gstack 技能设计指南',
-    description: '深入理解 Agent Skill 设计——以 gstack 为案例',
-    lang: 'zh-CN',
-    base: '/gstack-skill-design/',
+export default withMermaid(defineConfig({
+  title: 'gstack 技能设计指南',
+  description: '深入理解 Agent Skill 设计——以 gstack 为案例',
+  lang: 'zh-CN',
+  base: '/gstack-skill-design/',
 
   themeConfig: {
     nav: [
@@ -56,5 +55,4 @@ export default withMermaid(
     sidebarMenuLabel: '菜单',
     returnToTopLabel: '回到顶部'
   }
-}),
-)
+}))
